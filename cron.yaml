@@ -1,0 +1,5 @@
+cron:
+- description: update turnos
+  url: /turnos/update/
+  schedule: every 24 hours
+
