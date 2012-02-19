@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"> 
+  <head> 
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/> 
+    <title>Farmacias</title> 
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">function initialize(){
+	
+	var myLatlng=new google.maps.LatLng(-34.921465,-57.954493);
+	var myOptions={zoom:15,center:myLatlng,mapTypeId:google.maps.MapTypeId.ROADMAP}
+	var map=new google.maps.Map(document.getElementById("map_example"),myOptions);
+	
+	{% for farmacia in farmacias %}
+	var myLatLng=new google.maps.LatLng({{ farmacia.lat }}, {{ farmacia.lon }});
+	var bankMarker=new google.maps.Marker({ 
+		position: myLatLng,
+		map: map,
+		title: '{{ farmacia.nombre }} - {{ farmacia.direccion|escapejs }}',
+		icon: 'http://chart.apis.google.com/chart?chst=d_map_xpin_icon&chld=pin|medical|52B552'
+	});
+	{% endfor %}
+	
+	/*
+	var myLatLng=new google.maps.LatLng(-34.91439,-57.947034);
+	var govMarker=new google.maps.Marker({position:myLatLng,map:map,icon:'http://chart.apis.google.com/chart?chst=d_map_xpin_icon&chld=pin|civic-building|6991fd'});
+	var myLatLng=new google.maps.LatLng(-34.921096,-57.954174);
+	var lopezMarker=new google.maps.Marker({position:myLatLng,map:map,icon:'http://chart.apis.google.com/chart?chst=d_map_spin&chld=1.5|0|C6E7DE|12|_|Lopez'});
+	var myLatLng=new google.maps.LatLng(-34.922103,-57.967697);
+	var numberMarker=new google.maps.Marker({position:myLatLng,map:map,icon:'http://chart.apis.google.com/chart?chst=d_map_spin&chld=0.8|0|ed1818|12|_|99'});
+	*/
+}
+	</script>
+  </head> 
+  <body onload="initialize()" onunload="GUnload()"> 
+    <div id="map_example" style="width: 1004px; height: 700px;"></div> 
+  </body> 
+</html> 
