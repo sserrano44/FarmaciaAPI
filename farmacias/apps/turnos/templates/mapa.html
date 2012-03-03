@@ -16,7 +16,15 @@
 		position: myLatLng,
 		map: map,
 		title: '{{ farmacia.nombre }} - {{ farmacia.direccion|escapejs }}',
-		icon: 'http://chart.apis.google.com/chart?chst=d_map_xpin_icon&chld=pin|medical|52B552'
+                {% if farmacia.guard_today %}
+		icon: 'http://chart.apis.google.com/chart?chst=d_map_xpin_icon&chld=pin|medical|D14836'
+                {% else %}
+                {% if farmacia.guard_tomorrow %}
+                icon: 'http://chart.apis.google.com/chart?chst=d_map_xpin_icon&chld=pin|medical|FFFB00'
+                {% else %}
+                icon: 'http://chart.apis.google.com/chart?chst=d_map_xpin_icon&chld=pin|medical|52B552'
+                {% endif %}
+                {% endif %}
 	});
 	{% endfor %}
 	

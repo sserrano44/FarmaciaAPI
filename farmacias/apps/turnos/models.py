@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 from django.db import models
@@ -39,7 +40,21 @@ class Farmacia(models.Model):
                 logging.exception("problem resolving lat/lon of %s" % self.direccion)
         super(Farmacia, self).save(* args, ** kwargs)
 
-        
+    def guard_today(self):
+        now = datetime.datetime.now()
+        try:
+            self.turno_set.filter(inicio__lt=now, fin__gt=now)[0]
+            return True
+        except IndexError:
+            return False
+
+    def guard_tomorrow(self):
+        tomorrow = datetime.datetime.now() + datetime.timedelta(days=1)
+        try:
+            self.turno_set.filter(inicio__lt=tomorrow, fin__gt=tomorrow)[0]
+            return True
+        except IndexError:
+            return False
 
 class Turno(models.Model):
     farmacia    = models.ForeignKey(Farmacia)
