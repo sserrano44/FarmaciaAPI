@@ -3,6 +3,21 @@ import logging
 
 from django.db import models
 
+def today():
+    return datetime.datetime.now()
+
+def tomorrow():
+    return datetime.datetime.now() + datetime.timedelta(days=1)
+
+class DeTurnoManager(models.Manager):
+    def __init__(self, when, * args, ** kwargs):
+        self.when = when
+        super(DeTurnoManager, self).__init__(* args, ** kwargs)
+
+    def get_query_set(self):
+        when = self.when()
+        return super(DeTurnoManager, self).get_query_set().filter(turno__inicio__lt=when,turno__fin__gt=when)
+
 class Farmacia(models.Model):
     nombre      = models.CharField(max_length=64)
     #the name as it appears on the college website
@@ -13,7 +28,12 @@ class Farmacia(models.Model):
     telefono    = models.CharField(max_length=64, default="", blank=True)
     lat         = models.FloatField(null=True, blank=True)
     lon         = models.FloatField(null=True, blank=True)
-    
+    revisado    = models.BooleanField(default=False)
+
+    objects           = models.Manager()
+    on_guard_today    = DeTurnoManager(today)
+    on_guard_tomorrow = DeTurnoManager(tomorrow)
+ 
     def __unicode__(self):
         return u"%s" % self.nombre
 

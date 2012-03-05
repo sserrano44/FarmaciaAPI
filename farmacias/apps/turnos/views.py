@@ -96,5 +96,11 @@ def update(request):
 
 
 def mapa(request):
-    return render_to_response('mapa.html', {'farmacias': Farmacia.objects.filter(lat__isnull=False)}, RequestContext(request))
+    params = {
+       'farmacias':         Farmacia.objects.filter(lat__isnull=False),
+       'on_guard_today':    Farmacia.on_guard_today.all(),
+       'on_guard_tomorrow': Farmacia.on_guard_tomorrow.all()
+       
+    }
+    return render_to_response('mapa.html', params, RequestContext(request))
 
